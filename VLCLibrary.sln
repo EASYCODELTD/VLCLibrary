@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VLCTest", "VLCTest\VLCTest.csproj", "{AC6C15B5-F7EA-4972-96B8-AFBA52DEBE09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VLCLibrary", "VLCLibrary\VLCLibrary.csproj", "{208996F0-7831-420A-8B34-6FC5E0CF7C1D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{208996F0-7831-420A-8B34-6FC5E0CF7C1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{208996F0-7831-420A-8B34-6FC5E0CF7C1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{208996F0-7831-420A-8B34-6FC5E0CF7C1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{208996F0-7831-420A-8B34-6FC5E0CF7C1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC6C15B5-F7EA-4972-96B8-AFBA52DEBE09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC6C15B5-F7EA-4972-96B8-AFBA52DEBE09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC6C15B5-F7EA-4972-96B8-AFBA52DEBE09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC6C15B5-F7EA-4972-96B8-AFBA52DEBE09}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

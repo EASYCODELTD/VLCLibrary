@@ -1,0 +1,8 @@
+/mnt/oldos/home/rast/workspace/Mono/VLCLibrary/VLCTest/obj/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/mnt/oldos/home/rast/workspace/Mono/VLCLibrary/VLCTest/obj/Debug/VLCTest.gtk-gui.gui.stetic
+/mnt/oldos/home/rast/workspace/Mono/VLCLibrary/VLCTest/bin/Debug/VLCTest.exe.mdb
+/mnt/oldos/home/rast/workspace/Mono/VLCLibrary/VLCTest/bin/Debug/VLCTest.exe
+/mnt/oldos/home/rast/workspace/Mono/VLCLibrary/VLCTest/obj/Debug/VLCTest.exe
+/mnt/oldos/home/rast/workspace/Mono/VLCLibrary/VLCTest/obj/Debug/VLCTest.exe.mdb
+/mnt/oldos/home/rast/workspace/Mono/VLCLibrary/VLCTest/bin/Debug/VLCLibrary.dll
+/mnt/oldos/home/rast/workspace/Mono/VLCLibrary/VLCTest/bin/Debug/VLCLibrary.dll.mdb

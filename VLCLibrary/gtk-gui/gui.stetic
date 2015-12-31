@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stetic-interface>
+  <configuration>
+    <images-root-path>..</images-root-path>
+    <target-gtk-version>2.12</target-gtk-version>
+  </configuration>
+  <import>
+    <widget-library name="../bin/Debug/VLCLibrary.dll" internal="true" />
+  </import>
+  <widget class="Gtk.Bin" id="VLCLibrary.VLCWidget" design-size="300 300">
+    <property name="MemberName">VLC</property>
+    <property name="Visible">False</property>
+    <signal name="SizeAllocated" handler="OnSizeAllocated" />
+    <child>
+      <widget class="Gtk.VBox" id="vbox3">
+        <property name="MemberName" />
+        <property name="Homogeneous">True</property>
+        <child>
+          <widget class="Gtk.Image" id="output">
+            <property name="MemberName" />
+            <property name="Xalign">0</property>
+            <property name="Yalign">0</property>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">False</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+</stetic-interface>
