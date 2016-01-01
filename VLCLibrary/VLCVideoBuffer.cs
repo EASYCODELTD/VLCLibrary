@@ -6,7 +6,7 @@ namespace VLCLibrary
 
 
 
-	public class VLCVideoBuffer : VLCBase
+	public class VLCVideoBuffer  : VLCBase
 	{
 		public VLCVideoBuffer(uint width, uint height,uint bytes)
 		{
@@ -16,51 +16,52 @@ namespace VLCLibrary
 			Bytes = bytes;
 			Lines = Height;
 			FrameBuffer = new byte[Stride * Lines];
+			//Pixbuf =  new Gdk.Pixbuf (FrameBuffer, Gdk.Colorspace.Rgb, true, 8, (int)Width, (int)Height,(int) Stride);
+			Console.WriteLine ("CONSTRUCTOR");
+		}
+
+		~VLCVideoBuffer ()
+		{
+			Dispose(false);
+			Console.WriteLine ("DESTRUCTOR");
 		}
 
 		protected override void Dispose(bool disposing)
 		{
+			Console.WriteLine ("DISPOSE???? "+(disposing?"yes":"no"));
 			if (disposing) {
-				FrameBuffer = null;
+				//FrameBuffer = null;
+				//if (m_GCHandle.IsAllocated) {
+				//	m_GCHandle.Free();
+				//	isLock = false;
+				//}
 			}
 
-			if (m_GCHandle.IsAllocated) {
-				m_GCHandle.Free();
-				isLock = false;
-			}
+			Dispose(true);
+			GC.SuppressFinalize(this); // No need to call finalizer now
 		}
 
 		private GCHandle m_GCHandle = default(GCHandle);
 
 		internal IntPtr Lock()
 		{
-			if (isLock)
-				throw new Exception ("Object is lock");
 			
 			isLock = true;
 			return (m_GCHandle = GCHandle.Alloc(FrameBuffer, GCHandleType.Pinned)).AddrOfPinnedObject();
 		}
 
-		internal Gdk.Pixbuf Pixbuf()
-		{
-			//8bits per color
-			//if (isLock) return null;
-
-				
-			return new Gdk.Pixbuf (FrameBuffer, Gdk.Colorspace.Rgb, true, 8, (int)Width, (int)Height,(int) Stride);
-		}
-
+	
 		internal void Unlock()
 		{
 
-			if (!isLock)
-				throw new Exception ("Object is not lock");
+
 			
 			m_GCHandle.Free();
 
 			isLock = false;
 		}
 
+	
 		public bool isLock;
 		public uint Bytes;
 		public uint Width;

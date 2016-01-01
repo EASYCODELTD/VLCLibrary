@@ -160,16 +160,16 @@ namespace VLCLibraryImport
 		[DllImport("libvlc")]
 		public static extern void libvlc_media_player_set_xwindow(IntPtr player, IntPtr drawable);
 
-		public delegate IntPtr Lock_Callback(ref IntPtr opaque, ref IntPtr planes);
-		public delegate void Unlock_Callback(ref IntPtr opaque,ref IntPtr picture, ref IntPtr planes);
-		public delegate void Display_Callback(ref IntPtr opaque, ref IntPtr picture);
+		public delegate IntPtr Lock_Callback( IntPtr opaque, ref IntPtr planes);
+		public delegate void Unlock_Callback( IntPtr opaque,ref IntPtr picture, ref IntPtr planes);
+		public delegate void Display_Callback( IntPtr opaque, ref IntPtr picture);
 
 		[DllImport("libvlc")]
-		public static extern void libvlc_video_set_callbacks (IntPtr mp, 
-																Lock_Callback 	lockCallback, 
-			Unlock_Callback 	unlockCallBack, 
-			Display_Callback 	displayCallBack, 
-		                                                        IntPtr 	opaque); 
+		public static extern void libvlc_video_set_callbacks ( IntPtr mp, 
+																 Lock_Callback 	lockCallback, 
+			 Unlock_Callback 	unlockCallBack, 
+			 Display_Callback 	displayCallBack, 
+		                                                         IntPtr 	opaque); 
 		[DllImport("libvlc")]
 		public static extern void libvlc_video_set_format ( IntPtr	mp, 
 		                                                    [MarshalAs (UnmanagedType.LPStr)] string chroma, 
@@ -198,11 +198,11 @@ namespace VLCLibraryImport
 		#endregion
 
 		#region events
-		public static extern int libvlc_event_attach 	(	libvlc_event_manager_t * 	p_event_manager, 
-			libvlc_event_type_t 	i_event_type, 
-			libvlc_callback_t 	f_callback, 
-			void * 	user_data 
-		)
+	//	public static extern int libvlc_event_attach 	(	libvlc_event_manager_t * 	p_event_manager, 
+	//		libvlc_event_type_t 	i_event_type, 
+	//		libvlc_callback_t 	f_callback, 
+	//		void * 	user_data 
+	//	)
 
 		#endregion
 

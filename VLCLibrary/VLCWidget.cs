@@ -12,13 +12,35 @@ namespace VLCLibrary
 		LibVLC lib = null;
 		VLCMedia media = null;
 		VLCMediaPlayer player = null;
-		public uint width=640;
-		public uint height=480;
+
+
+		public uint _width=640;
+		public uint _height=480;
+		private bool inresizemode=false;
+
+		public uint width {
+			get { return _width;  } 		
+			set {
+				_width = value;
+
+			} 
+		}
+
+		public uint height {
+			get { return _height;  } 		
+			set {
+				_height = value;
+			
+			} 
+		}
 
 		public VLCWidget ()
 		{
 			this.Build ();
 			lib = new LibVLC ();
+
+
+
 		}
 
 		public bool OpenMediaFromMedia(VLCMedia media)
@@ -36,11 +58,33 @@ namespace VLCLibrary
 
 			player.NewFrameEvent += delegate(object sender, INewFrameEventArgs e) {
 
-				Gdk.Pixbuf buffer = (Gdk.Pixbuf )e.frame.Pixbuf.Clone();
 
-				output.Pixbuf = buffer.ScaleSimple ((int)width, (int)height, InterpType.Bilinear);
+				Console.WriteLine ("FRAME ");
 
+				//Gtk.Application.Invoke (delegate {
+					//Gdk.Pixbuf old =  output.Pixbuf;
+					Gdk.Pixbuf old =  output.Pixbuf;
+
+					output.Pixbuf = (Gdk.Pixbuf)e.frame.Clone();
+					
+					if(old!=null)
+					{
+
+						old.Dispose();
+						old = null;
+					}
+
+					//if(old!=null)
+					//{
+						//old.Dispose();
+						//old = null;
+					//}
+
+				//});
+					
 				if(NewFrameEvent!=null) NewFrameEvent(sender,e);	
+
+				System.GC.Collect();
 			};
 
 			//player.SetDrawable (output);
@@ -103,12 +147,17 @@ namespace VLCLibrary
 		private void OnSizeAllocated (object o, Gtk.SizeAllocatedArgs e)
 		{ 
 
-			width = (uint)e.Allocation.Width; 
-			height = (uint)e.Allocation.Height; 
+				width = (uint)e.Allocation.Width; 
+				height = (uint)e.Allocation.Height; 
 
-			Console.WriteLine ("Resize " + width + "px " + height+" px");
-
-
+				Console.WriteLine ("Resize " + width + "px " + height+" px");
+			if (!inresizemode && output.Pixbuf!=null) {
+				if (output.Pixbuf.Width != _width || output.Pixbuf.Height != _height) {
+					inresizemode = true;
+					output.Pixbuf = output.Pixbuf.ScaleSimple ((int)_width, (int)_height, InterpType.Bilinear);
+					inresizemode = false;
+				}
+			}
 		}
 	}
 

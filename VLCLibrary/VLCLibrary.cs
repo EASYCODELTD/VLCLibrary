@@ -52,8 +52,10 @@ namespace VLCLibrary
 			//for (var i = 0; i < argv.Length; i++) {
 			//	log += "["+argv [i]+"]";
 			//}
-
-			NativeVLC.vprintf(psz_mrl,arg);
+			if (psz_mrl != "") {
+				NativeVLC.vprintf (psz_mrl, arg);
+				Console.WriteLine ("");
+			}
 		}
 
 		public IntPtr Handler {

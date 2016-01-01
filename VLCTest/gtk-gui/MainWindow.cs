@@ -23,6 +23,8 @@ public partial class MainWindow
 		this.vlcplayer = new global::VLCLibrary.VLCWidget ();
 		this.vlcplayer.Events = ((global::Gdk.EventMask)(256));
 		this.vlcplayer.Name = "vlcplayer";
+		this.vlcplayer.width = ((uint)(0));
+		this.vlcplayer.height = ((uint)(0));
 		this.Add (this.vlcplayer);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();

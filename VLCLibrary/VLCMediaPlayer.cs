@@ -8,11 +8,11 @@ namespace VLCLibrary
 
 	public class INewFrameEventArgs : EventArgs
 	{
-		public INewFrameEventArgs (Gtk.Image frame)
+		public INewFrameEventArgs (Gdk.Pixbuf frame)
 		{
 			this.frame = frame;
 		}
-		public Gtk.Image frame=null;
+		public Gdk.Pixbuf frame=null;
 	}
 
 	public delegate void NewFrameEventHandler(object sender, INewFrameEventArgs e);
@@ -26,12 +26,13 @@ namespace VLCLibrary
 
 		private IntPtr _instance;
 	
-		private VLCVideoBuffer videoBuffer;
+		private VLCVideoBuffer videoBuffer=null;
 
 		private uint _width = 1280;
 		private uint _height= 720;
 		private Gtk.Image drawObject;
 		private Gdk.Pixbuf buffer;
+		GCHandle _this;
 
 		public IntPtr Handler {
 			get { return _instance;  } 		
@@ -51,19 +52,21 @@ namespace VLCLibrary
 
 		public VLCMediaPlayer (LibVLC core,VLCMedia media)
 		{
+			_this = GCHandle.Alloc(this);
+
 			_core = core;
 			_media = media;
-		
+	
 			_instance = NativeVLC.libvlc_media_player_new_from_media(_media.Handler);
-
-			NativeVLC.libvlc_video_set_callbacks (_instance,new NativeVLC.Lock_Callback(LockCalback),new NativeVLC.Unlock_Callback(UnlockCalback),new NativeVLC.Display_Callback(DisplayCalback),IntPtr.Zero); 
+	
+			NativeVLC.libvlc_video_set_callbacks (_instance,new NativeVLC.Lock_Callback(LockCalback),new NativeVLC.Unlock_Callback(UnlockCalback),new NativeVLC.Display_Callback(DisplayCalback),(IntPtr)_this); 
 
 			drawObject = new Gtk.Image ();
 		}
 
 		~VLCMediaPlayer ()
 		{
-			
+			Console.WriteLine ("DESTRUCTOR VLCMediaPlayer ");
 		
 
 		}
@@ -71,6 +74,8 @@ namespace VLCLibrary
 
 		protected override void Dispose(bool disposing)
 		{
+			Console.WriteLine ("DISPOSE2 ???? "+(disposing?"yes":"no"));
+
 			if (disposing) {
 				_core.Dispose ();
 				_media.Dispose ();
@@ -88,8 +93,12 @@ namespace VLCLibrary
 
 		private void CreateBuffer(uint width,uint height,uint bytes)
 		{
-			NativeVLC.libvlc_video_set_format(_instance, "RGBA", width, height, bytes * width);
+			Console.WriteLine ("CREATE BUFFER");
 			videoBuffer = new VLCVideoBuffer(width, height,bytes);
+
+			NativeVLC.libvlc_video_set_format(_instance, "RGBA", width, height, bytes * width);
+			Console.WriteLine ("CREATE BUFFER DONE");
+
 		}
 
 		public  int setVideoFormat(ref IntPtr opaque, string chroma, ref UInt32 width, ref UInt32 height, ref UInt32 pitches,ref UInt32 lines)
@@ -102,36 +111,58 @@ namespace VLCLibrary
 
 		}
 
-		public  IntPtr LockCalback(ref IntPtr opaque, ref IntPtr planes)
+		public static IntPtr LockCalback( IntPtr opaque, ref IntPtr planes)
 		{
+			GCHandle handle2 = (GCHandle) opaque;
+			VLCMediaPlayer _this = (handle2.Target as VLCMediaPlayer);
 
-			planes = videoBuffer.Lock();
-
+			Console.WriteLine ("Lock "+_this.GetType());
+		
+			planes = _this.videoBuffer.Lock ();
+		
 			return IntPtr.Zero;
 		}
 
-		public  void UnlockCalback(ref IntPtr opaque,ref IntPtr picture, ref IntPtr planes)
+		public static void UnlockCalback( IntPtr opaque,ref IntPtr picture, ref IntPtr planes)
 		{
+			GCHandle handle2 = (GCHandle) opaque;
+			VLCMediaPlayer _this = (handle2.Target as VLCMediaPlayer);
 
-			buffer = videoBuffer.Pixbuf ();
+			Console.WriteLine ("Unlock "+_this.GetType());
+			_this.videoBuffer.Unlock ();
 
-			videoBuffer.Unlock();
 		}
 
-		public   void DisplayCalback(ref IntPtr opaque, ref IntPtr picture)
+		public void NewFrame()
 		{
+			Gtk.Application.Invoke (delegate {
 
-			if (drawObject!=null) {
-				drawObject.Pixbuf = buffer;
+				if (NewFrameEvent != null) {
+					Gdk.Pixbuf frame = new Gdk.Pixbuf (videoBuffer.FrameBuffer, Gdk.Colorspace.Rgb, true, 8, (int)videoBuffer.Width, (int)videoBuffer.Height,(int) videoBuffer.Stride);
 
+					NewFrameEvent (this, new INewFrameEventArgs (frame));
 
-				if (NewFrameEvent != null && drawObject.Pixbuf!=null) {
-					Gtk.Application.Invoke (delegate {
-							NewFrameEvent (this, new INewFrameEventArgs (drawObject));
-					}
-					);
+					frame.Dispose();
+					frame = null;
 				}
-			}
+			});
+		}
+
+		public static  void DisplayCalback( IntPtr opaque, ref IntPtr picture)
+		{
+			Console.WriteLine (">--------------------");
+				
+				
+				GCHandle handle2 = (GCHandle) opaque;
+				VLCMediaPlayer _this = (handle2.Target as VLCMediaPlayer);
+				Console.WriteLine ("DISPLAY "+_this.GetType());
+				_this.NewFrame();
+				Console.WriteLine ("System.GC.Collect()");
+
+				System.GC.Collect();
+			
+			Console.WriteLine (">--------------------");
+
 		}
 
 		public void Play()

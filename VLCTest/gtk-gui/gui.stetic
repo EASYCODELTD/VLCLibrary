@@ -19,6 +19,8 @@
       <widget class="VLCLibrary.VLCWidget" id="vlcplayer">
         <property name="MemberName" />
         <property name="Events">ButtonPressMask</property>
+        <property name="width">0</property>
+        <property name="height">0</property>
         <signal name="NewFrameEvent" handler="OnVlcplayerNewFrameEvent" />
       </widget>
     </child>

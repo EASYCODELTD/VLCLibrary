@@ -11,7 +11,7 @@ public partial class MainWindow: Gtk.Window
 		vlcplayer.width = 1280;
 		vlcplayer.height = 720;
 
-		vlcplayer.Play ("test.mp4");
+		vlcplayer.Play ("big_buck_bunny_480p_surround-fix.avi");
 		//vlcplayer.PlayFromUri(new Uri("rtsp://admin:Abra0906@192.168.1.2/1/"));
 
 	}
@@ -24,8 +24,8 @@ public partial class MainWindow: Gtk.Window
 
 	protected void OnVlcplayerNewFrameEvent (object sender, INewFrameEventArgs e)
 	{
-		if (e.frame.Pixbuf != null) {
-			Console.WriteLine ("NEW FRAME " + e.frame.Pixbuf.Width + " x " + e.frame.Pixbuf.Height);
+		if (e.frame != null) {
+			//Console.WriteLine ("NEW FRAME " + e.frame.Width + " x " + e.frame.Height);
 		}
 	}
 }
