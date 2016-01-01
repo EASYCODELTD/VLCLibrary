@@ -6,11 +6,11 @@ namespace VLCLibrary
 
 	public class LibVLC: VLCBase 
 	{
-		private IntPtr library_instance;
+		private VLCNative.libvlc_instance_t library_instance;
 
 		public LibVLC ()
 		{
-	
+
 			string[] args = new string[] {
 				"-I", "dummy", 
 				"--ignore-config",
@@ -25,17 +25,20 @@ namespace VLCLibrary
 
 			};
 
+		
 
-			library_instance = NativeVLC.libvlc_new(args.Length, args);
+			library_instance = VLCNative.Core.libvlc_new(args.Length, args);
 
-			NativeVLC.libvlc_set_log_verbosity (library_instance, 0);
-			NativeVLC.libvlc_log_set (library_instance, new NativeVLC.Log_Callback(_log),IntPtr.Zero);
+			VLCNative.Logging.libvlc_set_log_verbosity (library_instance, 0);
+
+
+			VLCNative.Logging.libvlc_log_set (library_instance, _log,IntPtr.Zero);
 
 		}
 
 		~LibVLC ()
 		{
-			
+
 		}
 
 		protected override void Dispose(bool disposing)
@@ -43,22 +46,22 @@ namespace VLCLibrary
 			if (disposing) {
 			}
 
-			NativeVLC.libvlc_release (library_instance);
+			VLCNative.Core.libvlc_release (library_instance);
 		}
 
-		public static void _log(IntPtr data, int level, IntPtr ctx,string psz_mrl,  IntPtr arg )
+		public static void _log(IntPtr data, int level, VLCNative.libvlc_log_t ctx,string psz_mrl,  IntPtr arg )
 		{
 			//string log = "";
 			//for (var i = 0; i < argv.Length; i++) {
 			//	log += "["+argv [i]+"]";
 			//}
 			if (psz_mrl != "") {
-				NativeVLC.vprintf (psz_mrl, arg);
+				VLCNative.Logging.vprintf (psz_mrl, arg);
 				Console.WriteLine ("");
 			}
 		}
 
-		public IntPtr Handler {
+		public VLCNative.libvlc_instance_t Handler {
 			get { return library_instance;  } 		
 			set {} 
 		}
@@ -79,4 +82,3 @@ namespace VLCLibrary
 		}
 	}
 }
-

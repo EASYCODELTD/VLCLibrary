@@ -24,17 +24,18 @@ namespace VLCLibrary
 		private LibVLC _core=null;
 		private VLCMedia _media=null;
 
-		private IntPtr _instance;
+		private VLCNative.libvlc_media_player_t _instance;
 	
 		private VLCVideoBuffer videoBuffer=null;
 
 		private uint _width = 1280;
 		private uint _height= 720;
-		private Gtk.Image drawObject;
-		private Gdk.Pixbuf buffer;
+		private Gtk.Image drawObject=null;
+		private Gdk.Pixbuf buffer=null;
+
 		GCHandle _this;
 
-		public IntPtr Handler {
+		public VLCNative.libvlc_media_player_t Handler {
 			get { return _instance;  } 		
 			set {} 
 		}
@@ -57,16 +58,17 @@ namespace VLCLibrary
 			_core = core;
 			_media = media;
 	
-			_instance = NativeVLC.libvlc_media_player_new_from_media(_media.Handler);
+
+			_instance = VLCNative.MediaPlayer.libvlc_media_player_new_from_media(_media.Handler);
 	
-			NativeVLC.libvlc_video_set_callbacks (_instance,new NativeVLC.Lock_Callback(LockCalback),new NativeVLC.Unlock_Callback(UnlockCalback),new NativeVLC.Display_Callback(DisplayCalback),(IntPtr)_this); 
+			VLCNative.MediaPlayer.libvlc_video_set_callbacks (_instance,LockCalback,UnlockCalback,DisplayCalback,(IntPtr)_this); 
 
 			drawObject = new Gtk.Image ();
 		}
 
 		~VLCMediaPlayer ()
 		{
-			Console.WriteLine ("DESTRUCTOR VLCMediaPlayer ");
+
 		
 
 		}
@@ -74,16 +76,14 @@ namespace VLCLibrary
 
 		protected override void Dispose(bool disposing)
 		{
-			Console.WriteLine ("DISPOSE2 ???? "+(disposing?"yes":"no"));
+	
 
 			if (disposing) {
 				_core.Dispose ();
 				_media.Dispose ();
 			}
 
-			if (_instance == IntPtr.Zero) return;
-			//@TODO native instance remove
-			_instance = IntPtr.Zero;
+
 		}
 
 		public void SetDrawable(Gtk.Image obj)
@@ -93,11 +93,11 @@ namespace VLCLibrary
 
 		private void CreateBuffer(uint width,uint height,uint bytes)
 		{
-			Console.WriteLine ("CREATE BUFFER");
+
 			videoBuffer = new VLCVideoBuffer(width, height,bytes);
 
-			NativeVLC.libvlc_video_set_format(_instance, "RGBA", width, height, bytes * width);
-			Console.WriteLine ("CREATE BUFFER DONE");
+			VLCNative.MediaPlayer.libvlc_video_set_format(_instance, "RGBA", width, height, bytes * width);
+
 
 		}
 
@@ -169,7 +169,7 @@ namespace VLCLibrary
 		{
 			CreateBuffer (_width,_height,4);
 			 
-			NativeVLC.libvlc_media_player_play(_instance);
+			VLCNative.MediaPlayer.libvlc_media_player_play(_instance);
 
 	
 		}

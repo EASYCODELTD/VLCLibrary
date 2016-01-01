@@ -6,9 +6,9 @@ namespace VLCLibrary
 {
 	public class VLCMedia : VLCBase
 	{
-		private IntPtr _instance = IntPtr.Zero;
+		private VLCNative.libvlc_media_t _instance;
 
-		public IntPtr Handler {
+		public VLCNative.libvlc_media_t Handler {
 			get { return _instance;  } 		
 			set {} 
 		}
@@ -25,15 +25,15 @@ namespace VLCLibrary
 			if (disposing) {
 			}
 
-			if (_instance == IntPtr.Zero) return;
-			NativeVLC.libvlc_media_release(_instance);  
-			_instance = IntPtr.Zero;
+
+			VLCNative.Media.libvlc_media_release(_instance);  
+
 		}
 
 		public VLCMedia (LibVLC core,String path)
 		{
 	
-			_instance = NativeVLC.libvlc_media_new_path (core.Handler, path);
+			_instance = VLCNative.Media.libvlc_media_new_path (core.Handler, path);
 		
 		}
 
@@ -42,7 +42,7 @@ namespace VLCLibrary
 			string url = path.AbsoluteUri;
 			Console.WriteLine ("========================================================");
 			Console.WriteLine ("Url: " + url);
-			_instance = NativeVLC.libvlc_media_new_location (core.Handler,url);
+			_instance = VLCNative.Media.libvlc_media_new_location (core.Handler,url);
 			Console.WriteLine ("========================================================");
 		}
 	}

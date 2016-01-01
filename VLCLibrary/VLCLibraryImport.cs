@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace VLCLibraryImport
 {
+	/*
 	// http://www.videolan.org/developers/vlc/doc/doxygen/html/group__libvlc.html
 
 	enum libvlc_event_e {
@@ -112,100 +113,8 @@ namespace VLCLibraryImport
 		public string psz_message;
 	}
 
-	static class NativeVLC
-	{
-		#region core
-		[DllImport("libvlc")]
-		public static extern IntPtr libvlc_new(int argc, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr)] string[] argv);
-
-		[DllImport("libvlc")]
-		public static extern void libvlc_release(IntPtr instance);
-		#endregion
-
-		#region media
-		[DllImport("libvlc")]
-		public static extern IntPtr libvlc_media_new_path (IntPtr p_instance,[MarshalAs(UnmanagedType.LPStr)] string psz_mrl);
-
-		[DllImport("libvlc")]
-		public static extern IntPtr libvlc_media_new_location	(IntPtr p_instance,[MarshalAs(UnmanagedType.LPStr)] string psz_mrl);
-
-		[DllImport("libvlc")]
-		public static extern void libvlc_media_release(IntPtr p_meta_desc);
-		#endregion
-
-		public delegate void Log_Callback(IntPtr data, int level, IntPtr ctx,[MarshalAs(UnmanagedType.LPStr,SizeConst=255)] string psz_mrl,  IntPtr arg );
-
-		#region log
-
-		[DllImport("msvcrt.dll", CallingConvention = CallingConvention.Cdecl)]
-		public static extern int vprintf(string format, IntPtr ptr);
-
-		[DllImport("libvlc")]
-		public static extern void  libvlc_set_log_verbosity (IntPtr p_instance, int	level);
-
-		[DllImport("libvlc")]
-		public static extern void libvlc_log_set(IntPtr p_instance, Log_Callback cb,  IntPtr data );
-		#endregion
-
-		#region media player
-		[DllImport("libvlc")]
-		public static extern IntPtr libvlc_media_player_new_from_media(IntPtr media);
-
-		[DllImport("libvlc")]
-		public static extern void libvlc_media_player_release(IntPtr player);
-
-		[DllImport("libvlc")]
-		public static extern void libvlc_media_player_set_hwnd(IntPtr player, IntPtr drawable);
-
-		[DllImport("libvlc")]
-		public static extern void libvlc_media_player_set_xwindow(IntPtr player, IntPtr drawable);
-
-		public delegate IntPtr Lock_Callback( IntPtr opaque, ref IntPtr planes);
-		public delegate void Unlock_Callback( IntPtr opaque,ref IntPtr picture, ref IntPtr planes);
-		public delegate void Display_Callback( IntPtr opaque, ref IntPtr picture);
-
-		[DllImport("libvlc")]
-		public static extern void libvlc_video_set_callbacks ( IntPtr mp, 
-																 Lock_Callback 	lockCallback, 
-			 Unlock_Callback 	unlockCallBack, 
-			 Display_Callback 	displayCallBack, 
-		                                                         IntPtr 	opaque); 
-		[DllImport("libvlc")]
-		public static extern void libvlc_video_set_format ( IntPtr	mp, 
-		                                                    [MarshalAs (UnmanagedType.LPStr)] string chroma, 
-		                                                     UInt32 	width, 
-		                                                     UInt32 	height, 
-		                                                     UInt32 	pitch);
 
 
-		public delegate int  libvlc_video_format_cb (ref IntPtr opaque, [MarshalAs (UnmanagedType.LPStr)] string chroma, ref UInt32 width, ref UInt32 height, ref UInt32 pitches,ref UInt32 lines);
-		public delegate void libvlc_video_cleanup_cb(ref IntPtr opaque);
-
-		[DllImport("libvlc")]
-		public static extern void  libvlc_video_set_format_callbacks (IntPtr mp, 
-		                                          libvlc_video_format_cb 	setup, 
-		                                          libvlc_video_cleanup_cb 	cleanup 
-		);
-
-		[DllImport("libvlc")]
-		public static extern void libvlc_media_player_play(IntPtr player);
-
-		[DllImport("libvlc")]
-		public static extern void libvlc_media_player_pause(IntPtr player);
-
-		[DllImport("libvlc")]
-		public static extern void libvlc_media_player_stop(IntPtr player);
-		#endregion
-
-		#region events
-	//	public static extern int libvlc_event_attach 	(	libvlc_event_manager_t * 	p_event_manager, 
-	//		libvlc_event_type_t 	i_event_type, 
-	//		libvlc_callback_t 	f_callback, 
-	//		void * 	user_data 
-	//	)
-
-		#endregion
-
-	}
+	*/
 }
 
