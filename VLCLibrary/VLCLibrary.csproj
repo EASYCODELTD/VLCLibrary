@@ -58,6 +58,9 @@
     <Compile Include="VLCLibrary.cs" />
     <Compile Include="Class\VLCBase.cs" />
     <Compile Include="Class\VLCVideoBuffer.cs" />
+    <Compile Include="MediaPlayer\VLCEventManager.cs" />
+    <Compile Include="VLCNative\Events_import.cs" />
+    <Compile Include="MediaEncoder\MediaEncoder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -71,5 +74,6 @@
     <Folder Include="Media\" />
     <Folder Include="Widgets\" />
     <Folder Include="Class\" />
+    <Folder Include="MediaEncoder\" />
   </ItemGroup>
 </Project>

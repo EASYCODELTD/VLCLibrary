@@ -51,6 +51,14 @@ namespace VLCLibrary
 			set { _height = value; } 
 		}
 
+
+		private VLCEventManager _eventManager;
+
+		public VLCEventManager EventManager {
+			get { return _eventManager;  } 		
+			set {} 
+		}
+
 		public VLCMediaPlayer (LibVLC core,VLCMedia media)
 		{
 			_this = GCHandle.Alloc(this);
@@ -60,16 +68,20 @@ namespace VLCLibrary
 	
 
 			_instance = VLCNative.MediaPlayer.libvlc_media_player_new_from_media(_media.Handler);
-	
+
 			VLCNative.MediaPlayer.libvlc_video_set_callbacks (_instance,LockCalback,UnlockCalback,DisplayCalback,(IntPtr)_this); 
 
 			drawObject = new Gtk.Image ();
+
+			_eventManager = new VLCEventManager (this);
+
 		}
 
 		~VLCMediaPlayer ()
 		{
 
 		
+
 
 		}
 
@@ -83,7 +95,7 @@ namespace VLCLibrary
 				_media.Dispose ();
 			}
 
-
+			_this.Free();
 		}
 
 		public void SetDrawable(Gtk.Image obj)
@@ -111,12 +123,18 @@ namespace VLCLibrary
 
 		}
 
+		public static VLCMediaPlayer PtrToMediaPlayer(IntPtr ptr)
+		{
+			GCHandle handle2 = (GCHandle) ptr;
+			return (handle2.Target as VLCMediaPlayer);
+		}
+
 		public static IntPtr LockCalback( IntPtr opaque, ref IntPtr planes)
 		{
-			GCHandle handle2 = (GCHandle) opaque;
-			VLCMediaPlayer _this = (handle2.Target as VLCMediaPlayer);
+			
+			VLCMediaPlayer _this = PtrToMediaPlayer (opaque);
 
-			Console.WriteLine ("Lock "+_this.GetType());
+		
 		
 			planes = _this.videoBuffer.Lock ();
 		
@@ -125,10 +143,9 @@ namespace VLCLibrary
 
 		public static void UnlockCalback( IntPtr opaque,ref IntPtr picture, ref IntPtr planes)
 		{
-			GCHandle handle2 = (GCHandle) opaque;
-			VLCMediaPlayer _this = (handle2.Target as VLCMediaPlayer);
+			VLCMediaPlayer _this = PtrToMediaPlayer (opaque);
 
-			Console.WriteLine ("Unlock "+_this.GetType());
+		
 			_this.videoBuffer.Unlock ();
 
 		}
@@ -150,18 +167,17 @@ namespace VLCLibrary
 
 		public static  void DisplayCalback( IntPtr opaque, ref IntPtr picture)
 		{
-			Console.WriteLine (">--------------------");
+
 				
-				
-				GCHandle handle2 = (GCHandle) opaque;
-				VLCMediaPlayer _this = (handle2.Target as VLCMediaPlayer);
-				Console.WriteLine ("DISPLAY "+_this.GetType());
+				VLCMediaPlayer _this = PtrToMediaPlayer (opaque);
+
+		
 				_this.NewFrame();
-				Console.WriteLine ("System.GC.Collect()");
+		
 
 				System.GC.Collect();
 			
-			Console.WriteLine (">--------------------");
+
 
 		}
 

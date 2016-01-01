@@ -1,5 +1,7 @@
 ﻿using System;
 using VLCLibraryImport;
+using System.Text;
+using System.Runtime.InteropServices;
 
 namespace VLCLibrary
 {
@@ -8,28 +10,47 @@ namespace VLCLibrary
 	{
 		private VLCNative.libvlc_instance_t library_instance;
 
-		public LibVLC ()
+		public LibVLC (bool encoder=false,string outputfile="")
 		{
 
-			string[] args = new string[] {
-				"-I", "dummy", 
-				"--ignore-config",
-				"--no-xlib",
-				"--vout","vmem",
-				"-v",
-				"--noaudio",
-				"--extraintf=logger","--verbose=4",
+			string[] args;
 
-				"--deinterlace-mode=blend",
-				"--no-osd", "--disable-screensaver",
+			if (encoder) {
+				args = new string[] {
+					"-I", "dummy", 
+					"--ignore-config",
+					"--no-xlib",
+					"--vout", "vmem",
+					"-v",
+					"--noaudio",
+					//"--extraintf=logger","--verbose=4",
 
-			};
+					"--deinterlace-mode=blend",
+					"--no-osd", "--disable-screensaver",
+					"--sub-source","marq",
+					"--sout=file/ps:example.mpg",
+				};
 
-		
+			} else {
+				args = new string[] {
+					"-I", "dummy", 
+					"--ignore-config",
+					"--no-xlib",
+					"--vout", "vmem",
+					"-v",
+					"--noaudio",
+					//"--extraintf=logger","--verbose=4",
+
+					"--deinterlace-mode=blend",
+					"--no-osd", "--disable-screensaver",
+
+				};
+
+			}
 
 			library_instance = VLCNative.Core.libvlc_new(args.Length, args);
 
-			VLCNative.Logging.libvlc_set_log_verbosity (library_instance, 0);
+			VLCNative.Logging.libvlc_set_log_verbosity (library_instance, 4);
 
 
 			VLCNative.Logging.libvlc_log_set (library_instance, _log,IntPtr.Zero);
@@ -49,16 +70,16 @@ namespace VLCLibrary
 			VLCNative.Core.libvlc_release (library_instance);
 		}
 
-		public static void _log(IntPtr data, int level, VLCNative.libvlc_log_t ctx,string psz_mrl,  IntPtr arg )
+		public static void _log(IntPtr data, int level, VLCNative.libvlc_log_t ctx,string psz_mrl,   IntPtr args  )
 		{
-			//string log = "";
-			//for (var i = 0; i < argv.Length; i++) {
-			//	log += "["+argv [i]+"]";
-			//}
-			if (psz_mrl != "") {
-				VLCNative.Logging.vprintf (psz_mrl, arg);
-				Console.WriteLine ("");
-			}
+	
+			
+	
+			String log = "Log: "+psz_mrl;
+
+			VLCNative.Logging.vprintf (log,args);
+
+
 		}
 
 		public VLCNative.libvlc_instance_t Handler {

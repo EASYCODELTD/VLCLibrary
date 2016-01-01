@@ -1,2 +1,5 @@
 VLCLibrary.userprefs
 VLCTest/bin/Debug/big_buck_bunny_480p_surround-fix.avi
+bin/Debug
+obj/Debug
+

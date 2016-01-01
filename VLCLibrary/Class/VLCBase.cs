@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace VLCLibrary
 {
@@ -7,7 +8,7 @@ namespace VLCLibrary
 	public abstract class VLCBase : IDisposable
 	{
 		private bool m_isDisposed;
-
+	
 		public void Dispose()
 		{
 			if (!m_isDisposed)

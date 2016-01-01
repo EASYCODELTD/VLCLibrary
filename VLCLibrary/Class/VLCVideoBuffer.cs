@@ -16,19 +16,18 @@ namespace VLCLibrary
 			Bytes = bytes;
 			Lines = Height;
 			FrameBuffer = new byte[Stride * Lines];
-			//Pixbuf =  new Gdk.Pixbuf (FrameBuffer, Gdk.Colorspace.Rgb, true, 8, (int)Width, (int)Height,(int) Stride);
-			Console.WriteLine ("CONSTRUCTOR");
+
 		}
 
 		~VLCVideoBuffer ()
 		{
 			Dispose(false);
-			Console.WriteLine ("DESTRUCTOR");
+
 		}
 
 		protected override void Dispose(bool disposing)
 		{
-			Console.WriteLine ("DISPOSE???? "+(disposing?"yes":"no"));
+
 			if (disposing) {
 				//FrameBuffer = null;
 				//if (m_GCHandle.IsAllocated) {

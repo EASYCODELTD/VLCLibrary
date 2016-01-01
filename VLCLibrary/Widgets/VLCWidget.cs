@@ -59,8 +59,6 @@ namespace VLCLibrary
 			player.NewFrameEvent += delegate(object sender, INewFrameEventArgs e) {
 
 
-				Console.WriteLine ("FRAME ");
-
 				//Gtk.Application.Invoke (delegate {
 					//Gdk.Pixbuf old =  output.Pixbuf;
 					Gdk.Pixbuf old =  output.Pixbuf;
@@ -150,7 +148,7 @@ namespace VLCLibrary
 				width = (uint)e.Allocation.Width; 
 				height = (uint)e.Allocation.Height; 
 
-				Console.WriteLine ("Resize " + width + "px " + height+" px");
+
 			if (!inresizemode && output.Pixbuf!=null) {
 				if (output.Pixbuf.Width != _width || output.Pixbuf.Height != _height) {
 					inresizemode = true;
